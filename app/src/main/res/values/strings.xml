@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EngineeringAiPracticalTest</string>
+    <string name="msg_no_netConnection">No net connection available</string>
 </resources>

@@ -20,8 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-
     private static Retrofit retrofitBaseApi = null;
+
+    private static final int timeOut = 5;
 
     public static BaseApiMethods getBaseApiMethods() {
         return createRetrofitBase().create(BaseApiMethods.class);
@@ -44,9 +45,9 @@ public class ApiClient {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        httpClient.connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
-            .writeTimeout(1, TimeUnit.MINUTES);
+        httpClient.connectTimeout(timeOut, TimeUnit.SECONDS)
+            .readTimeout(timeOut, TimeUnit.SECONDS)
+            .writeTimeout(timeOut, TimeUnit.SECONDS);
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
