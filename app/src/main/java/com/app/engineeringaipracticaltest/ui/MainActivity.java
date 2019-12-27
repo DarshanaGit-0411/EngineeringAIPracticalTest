@@ -21,7 +21,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.alexbykov.nopaginate.callback.OnLoadMoreListener;
 import ru.alexbykov.nopaginate.paginate.NoPaginate;
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -65,10 +64,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             .setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
+                    /* *
+                     * check for next availble data
+                     * */
                     if (hasMore) {
                         //http call
                         noPaginate.showLoading(true);
                         int offset = pageSize * (pageNo - 1);
+                        /**
+                         * fetch data from server
+                         * */
                         callService(offset);
                     } else {
                         swipeRefreshLayout.setRefreshing(false);
@@ -90,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     noPaginate.showLoading(false);
                     swipeRefreshLayout.setRefreshing(false);
 
+                    /**
+                     * check for success response
+                     * */
                     if (response.isSuccessful()) {
                         ClsUserResponse clsUserResponse = response.body();
                         if (clsUserResponse != null && clsUserResponse.getStatus()) {
@@ -99,12 +107,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             hasMore = clsUserResponse.getData().getHasMore();
                             userArrayList.addAll(response.body().getData().getUsers());
                             userAdapter.setItems(userArrayList);
-                            pageNo++;
-                            Timber.e("get success response");
+
+                            /**
+                             * if has more neta then increment page count
+                             * */
+                            if (hasMore)
+                                pageNo++;
                         }
                     } else {
                         noPaginate.showError(true);
-                        Timber.e("failed to get response");
                     }
                 }
 

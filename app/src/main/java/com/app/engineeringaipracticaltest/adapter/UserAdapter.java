@@ -36,6 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     private void bindData(ViewHolder holder, final User user) {
+
         /*load user image*/
         Glide.with(holder.ivUser.getContext())
             .load(user.getImage())
@@ -43,8 +44,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             .placeholder(R.drawable.ic_user_place_holder_24dp)
             .into(holder.ivUser);
 
+        /*set user name*/
         holder.tvUserName.setText(user.getName());
 
+        /*set image list of user*/
         final ImageAdapter imageAdapter = new ImageAdapter((ArrayList<String>) user.getItems());
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.rvImage.getContext(), 2);
@@ -53,6 +56,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
+                    /*check for odd even logic*/
                     if (user.getItems().size() % 2 == 0) {
                         return 1;
                     } else if (position == 0) {
